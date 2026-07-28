@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const createTodoItem = (text) => {
     const li = document.createElement("li");
     li.className = "todo-item";
+    li.draggable = true;
 
     const left = document.createElement("div");
     left.className = "item-left";
@@ -134,6 +135,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = doneItem.querySelector(".task").textContent;
     doneItem.remove();
     todoList.insertAdjacentElement("afterbegin", createTodoItem(text));
+  };
+
+
+  let dragItem = null;
+
+  todoList.addEventListener("dragstart", (e) => {
+    const item = e.target.closest(".todo-item");
+    if (!item || e.target.matches("input, button, .editInput")) {
+      e.preventDefault();
+      return;
+    }
+    dragItem = item;
+    item.classList.add("dragging");
+    e.dataTransfer.effectAllowed = "move";
+  });
+
+  todoList.addEventListener("dragend", (e) => {
+    const item = e.target.closest(".todo-item");
+    if (item) item.classList.remove("dragging");
+    dragItem = null;
+    todoList.querySelectorAll(".drag-over").forEach((el) => {
+      el.classList.remove("drag-over");
+    });
+  });
+
+  todoList.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const after = getDragAfterElement(todoList, e.clientY);
+    const dragging = dragItem;
+    if (!dragging) return;
+    if (after == null) {
+      todoList.appendChild(dragging);
+    } else {
+      todoList.insertBefore(dragging, after);
+    }
+  });
+
+  const getDragAfterElement = (container, y) => {
+    const elements = [...container.querySelectorAll(".todo-item:not(.dragging)")];
+    return elements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset, element: child };
+        }
+        return closest;
+      },
+      { offset: Number.NEGATIVE_INFINITY, element: null }
+    ).element;
   };
 
   addBtn.addEventListener("click", addTask);

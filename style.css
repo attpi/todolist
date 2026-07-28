@@ -150,3 +150,18 @@ button.editBtn {
   border: 1px solid #4aa;
   border-radius: 2px;
 }
+
+
+.todo-item {
+  cursor: grab;
+}
+
+.todo-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.todo-item .item-actions,
+.todo-item .completeCheck {
+  cursor: pointer;
+}
