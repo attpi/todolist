@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,46 +7,21 @@
     <title>TODO App</title>
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="style.css" />
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
   </head>
   <body>
     <main class="todo-app">
       <h1>TODO List</h1>
       <section class="newTask">
-        <input type="text" id="taskInput" value="" />
-        <button id="addBtn">新增</button>
+        <input type="text" id="taskInput" value="" placeholder="輸入待辦事項…" />
+        <button type="button" id="addBtn">新增</button>
       </section>
       <section class="taskBlock">
-        <ul class="todo-list">
-          <li class="todo-item">
-            <span class="item">待辦事項1</span>
-            <button class="closeBtn">X</button>
-          </li>
-          <li class="todo-item">
-            <span class="item">待辦事項2</span>
-            <button class="closeBtn">X</button>
-          </li>
-        </ul>
+        <ul class="todo-list"></ul>
       </section>
       <section class="tasksDone">
         <h2>已經完成!!</h2>
-        <ul class="doneList">
-          <li class="doneTask">
-            <span class="task">已辦事項1</span>
-            <span class="finishTime"></span>
-            <button class="rollbackBtn">V</button>
-          </li>
-          <li class="doneTask">
-            <span class="task">已辦事項2</span>
-            <span class="finishTime"></span>
-            <button class="rollbackBtn">V</button>
-          </li>
-          <li class="doneTask">
-            <span class="task">已辦事項3</span>
-            <span class="finishTime"></span>
-            <button class="rollbackBtn">V</button>
-          </li>
-        </ul>
+        <ul class="doneList"></ul>
       </section>
     </main>
   </body>
