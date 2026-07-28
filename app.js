@@ -29,8 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const span = document.createElement("span");
     span.className = "item";
     span.textContent = text;
+    span.title = "雙擊可編輯";
 
     left.append(checkbox, span);
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "editBtn";
+    editBtn.textContent = "編輯";
+    editBtn.setAttribute("aria-label", "編輯");
 
     const closeBtn = document.createElement("button");
     closeBtn.type = "button";
@@ -38,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
     closeBtn.textContent = "X";
     closeBtn.setAttribute("aria-label", "刪除");
 
-    li.append(left, closeBtn);
+    actions.append(editBtn, closeBtn);
+    li.append(left, actions);
     return li;
   };
 
@@ -63,6 +74,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     li.append(span, time, rollbackBtn);
     return li;
+  };
+
+  const startEdit = (todoItem) => {
+    const span = todoItem.querySelector(".item");
+    if (!span || todoItem.querySelector(".editInput")) return;
+
+    const original = span.textContent;
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "editInput";
+    input.value = original;
+
+    const finish = (save) => {
+      const next = input.value.trim();
+      if (save && next) {
+        span.textContent = next;
+      }
+      input.replaceWith(span);
+    };
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        finish(true);
+      } else if (e.key === "Escape") {
+        finish(false);
+      }
+    });
+    input.addEventListener("blur", () => finish(true));
+
+    span.replaceWith(input);
+    input.focus();
+    input.select();
   };
 
   const addTask = () => {
@@ -101,8 +145,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   todoList.addEventListener("click", (e) => {
+    const todoItem = e.target.closest(".todo-item");
+    if (!todoItem) return;
+
     if (e.target.classList.contains("closeBtn")) {
-      e.target.closest(".todo-item").remove();
+      todoItem.remove();
+      return;
+    }
+    if (e.target.classList.contains("editBtn")) {
+      startEdit(todoItem);
+    }
+  });
+
+  todoList.addEventListener("dblclick", (e) => {
+    if (e.target.classList.contains("item")) {
+      startEdit(e.target.closest(".todo-item"));
     }
   });
 

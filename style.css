@@ -124,3 +124,29 @@ button.rollbackBtn {
   color: #aaa;
   font-weight: lighter;
 }
+
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+button.editBtn {
+  padding: 4px 8px;
+  border: 1px solid darkgray;
+  border-radius: 2px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.editInput {
+  font-size: 1.5em;
+  font-weight: 200;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid #4aa;
+  border-radius: 2px;
+}
